@@ -12,40 +12,40 @@ import FoomdStr from "./docs/Foo.md?raw";
 import Foomd from "./docs/Foo.md";
 
 import markdown2html from "./util/markdown2html";
+import EditCode from "./component/EditCode";
+import FromInput from "./component/FormInput";
+import DynamicCompo from "./component/DynamicCompo";
 
 function App() {
   const [content, setContent] = useState("");
   const [compo, setCompo] = useState<any>();
 
   useEffect(() => {
-    // console.log(Readme);
-    // let res = "";
-
-    // const tempHandle = remark().use(remarkRehype, { allowDangerousHtml: true }).use(rehypeRaw);
-
-    // const _compo = tempHandle.use(rehypeReact, production).processSync(Readme);
-
-    // const _content = remark()
-    // 	.use(remarkRehype, { allowDangerousHtml: true })
-    // 	.use(rehypeRaw)
-    // 	.use(rehypeStringify)
-    // 	.processSync(Readme);
-
-    // setContent(_content.value);
-    // setCompo(_compo.result);
-
-    getCodeblock(FoomdStr).then((res) => {
-      console.log("code block: ", res);
-    });
-
-    // markdown2html(FoomdStr).then((res) => {
-    //   console.log(res.value);
+    // getCodeblock(FoomdStr).then((res) => {
+    //   console.log("code block: ", res);
     // });
   }, []);
   return (
     <div>
-      <MarkdownReact code={FoomdStr} />
-      <Foomd />
+      <DynamicCompo />
+      {/* <MarkdownReact code={FoomdStr} /> */}
+      {/* <Foomd /> */}
+      {/* <EditCode
+        code={`
+          import React from 'react';
+          import {useState} from 'react';
+          import * as babel from '@babel/core';
+
+          function App(){
+          const [count, setCount] = useState(0);
+            return <div style={{height: '200px'}} onClick={()=>{
+            setCount(count+1);
+            }}>app <button>count: {count}</button></div>
+          }
+          
+          export default App;
+      `}
+      /> */}
     </div>
   );
 }

@@ -25,6 +25,7 @@ const MarkdownReact = (props: { code: string }) => {
       `);
 
     setCode(code);
+    console.log("code: ", code);
   };
 
   useEffect(() => {
@@ -33,7 +34,6 @@ const MarkdownReact = (props: { code: string }) => {
 
   const Compo = code ? execCode(code) : () => <div></div>;
 
-  console.log("Compo", Compo);
   return (
     <div className="remark-react-container">
       <Compo />

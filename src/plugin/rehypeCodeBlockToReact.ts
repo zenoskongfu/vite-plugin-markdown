@@ -6,13 +6,18 @@ export type OptionType = {
   handleCode: (
     code: string,
     language: string
-  ) => { tagName: string; properties?: Record<string, any> };
+  ) => {
+    tagName: string;
+    properties?: Record<string, any>;
+    children?: Record<string, string>[];
+  };
 };
 
 export type CodeSrcOptionType = {
   handleCode: (properties: Record<string, string>) => {
     tagName: string;
     properties?: Record<string, string>;
+    children?: Record<string, string>[];
   };
 };
 
@@ -35,7 +40,7 @@ const handleCodeBlock = (tree: Tree, options: OptionType) => {
       const code = codeNode.children[0].value;
 
       try {
-        const { tagName, properties } = handleCode(code, language);
+        const { tagName, properties, children } = handleCode(code, language);
         // 替换为自定义的 React 组件
         node.tagName = "pre";
         node.type = "element";
@@ -44,12 +49,14 @@ const handleCodeBlock = (tree: Tree, options: OptionType) => {
             type: "element",
             tagName: tagName,
             properties: properties || {},
-            children: [
-              {
-                type: "text",
-                value: "",
-              },
-            ],
+            children: children
+              ? children
+              : [
+                  {
+                    type: "text",
+                    value: "",
+                  },
+                ],
           },
         ];
       } catch (error) {
@@ -64,7 +71,7 @@ const handleCodeSrc = (tree: Tree, options: CodeSrcOptionType) => {
   visit(tree, "element", (node: any) => {
     if (node.tagName === "code" && node.properties.src) {
       try {
-        const { tagName, properties } = handleCode(node.properties);
+        const { tagName, properties, children } = handleCode(node.properties);
         // 替换为自定义的 React 组件
         node.tagName = "pre";
         node.type = "element";
@@ -73,12 +80,14 @@ const handleCodeSrc = (tree: Tree, options: CodeSrcOptionType) => {
             type: "element",
             tagName: tagName,
             properties: properties || {},
-            children: [
-              {
-                type: "text",
-                value: "",
-              },
-            ],
+            children: children
+              ? children
+              : [
+                  {
+                    type: "text",
+                    value: "",
+                  },
+                ],
           },
         ];
       } catch (error) {

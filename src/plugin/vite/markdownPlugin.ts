@@ -31,9 +31,16 @@ const markdownPlugin = function (): Plugin {
             const filepath = path.resolve(tempPath, filename + ".tsx");
             dynamicCompos[filename] = filepath;
 
+            // dirname
+            const dirname = path.dirname(id);
+
             fs.writeFileSync(filepath, code, "utf-8");
             return {
-              tagName: filename,
+              tagName: "editcode",
+              properties: {
+                code: code,
+                currentPath: dirname,
+              },
             };
           },
         },
@@ -46,14 +53,21 @@ const markdownPlugin = function (): Plugin {
             const filename = mdName + "demo" + index++;
             dynamicCompos[filename] = absolutePath;
 
+            const code = fs.readFileSync(absolutePath, "utf-8");
+            // if(code.)
+
             return {
-              tagName: filename,
+              tagName: "editcode",
+              properties: {
+                code,
+                currentPath: path.dirname(id),
+              },
             };
           },
         },
       });
 
-      console.log("htmlStr: ", htmlStr);
+      const addCompo = [["editcode", "@src/component/EditCode"]];
 
       let res = `
           import React from 'react';
@@ -62,6 +76,11 @@ const markdownPlugin = function (): Plugin {
               return `import ${name} from '${path}'`;
             })
             .join(";\n")}
+            ${addCompo.map(
+              (item) =>
+                `import ${firstCharUpperCase(item[0])} from '${item[1]}'`
+            )}
+
           export default function(){
             return <>
               ${htmlStr.value}
@@ -76,7 +95,6 @@ const markdownPlugin = function (): Plugin {
             "g"
           ),
           (match: string) => {
-            console.log("match: ", match);
             return firstCharUpperCase(match);
           }
         );
@@ -85,8 +103,11 @@ const markdownPlugin = function (): Plugin {
       };
 
       try {
+        const addCompoName = addCompo.map((item) => item[0]);
         res = (
-          await transformEsbuild(handleTagname(Object.keys(dynamicCompos), res))
+          await transformEsbuild(
+            handleTagname([...Object.keys(dynamicCompos), ...addCompoName], res)
+          )
         ).code;
       } catch (error) {
         console.error(error);

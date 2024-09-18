@@ -24,10 +24,11 @@ const generateRequire = () => {
           ${dependenciesKeys
             .map((item) => {
               return `case '${item}':
-            return ${handlePackageName(item)};`;
+              return ${handlePackageName(item)};`;
             })
             .join("\n")}
           default:
+            fetch('/vite-plugin-require?module='+module);
             return {}
         }
     }

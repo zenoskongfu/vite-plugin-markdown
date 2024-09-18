@@ -1,0 +1,28 @@
+.edit-code-container {
+  padding: 3rem 0;
+  box-shadow: 0 0 3px 3px gainsboro;
+  border-radius: 4px;
+
+  .editor {
+    width: 50%;
+    height: 200px;
+  }
+
+
+}
+
+.component-container {
+  box-shadow: 0 0 5px 0 lightgray;
+
+}
+
+.error-boundary-container {
+  padding: 2rem;
+
+  .err-msg {
+    color: red;
+    white-space: normal;
+    padding: 1rem;
+    background-color: rgba(red, 0.2);
+  }
+}

@@ -1,17 +1,14 @@
-import require from "virtual:require";
-const React = await import("react");
-export const execCode = (code: string) => {
+import require, {getRequire} from "virtual:require";
+
+export const execCode = (code: string, currentPath: string = '') => {
   if (!code) return () => {};
 
-  // const require = (module: string) => {
-  //   if (module == "react") {
-  //     return React;
-  //   }
-  // };
-
   const exports = { default: null };
+  try {
+    new Function("require", "exports", code)(getRequire(currentPath), exports);
 
-  new Function("require", "exports", code)(require, exports);
-
-  return exports.default as any;
+    return exports.default as any;
+  } catch (error) {
+    return () => null;
+  }
 };

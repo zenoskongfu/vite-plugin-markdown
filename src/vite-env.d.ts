@@ -5,5 +5,6 @@ declare module "*.md";
 declare module "remark-code-blocks" {}
 
 declare module "virtual:require" {
-  export function require(module: string): any;
+  export default function require(module: string): any;
+  export function getRequire(path: string): typeof require;
 }

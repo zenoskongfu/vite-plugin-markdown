@@ -1,0 +1,8 @@
+.form-input {}
+
+.input {}
+
+/* 报错信息DOM类名 */
+.form-input-container .form-input .input .err-msg {
+  position: absolute;
+}
