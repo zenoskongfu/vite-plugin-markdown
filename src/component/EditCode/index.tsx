@@ -1,14 +1,16 @@
 import { debounce } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import compileCode from "../MarkdownReact/complieCode";
-import { execCode } from "../MarkdownReact/execCode";
+import { execCode } from "../util/execCode";
 import ErrorBoundary from "./ErrorBoundary";
 import "./index.scss";
+import DynamicCompo from "../DynamicCompo";
 const EditCode = (props: { code: string; currentPath?: string }) => {
   const { code, currentPath } = props;
-  // const code = atob(_code);
-  // const currentPath = _currentPath && atob(_currentPath);
-  // console.log("currentPath: ", _currentPath, _code);
+  console.log("+======");
+  console.log("code: ", code);
+  console.log("currentPath: ", currentPath);
+  console.log("+======");
 
   const [innCode, setInnerCode] = useState(code);
   const [compliedCode, setCompliedCode] = useState("");
@@ -22,7 +24,6 @@ const EditCode = (props: { code: string; currentPath?: string }) => {
       const res = compileCode(innCode);
       setCompliedCode(res!);
       setKey(key + 1);
-      // setCompo(execCode(res));
     } catch (error) {
       console.log("complie error");
     }
@@ -37,14 +38,14 @@ const EditCode = (props: { code: string; currentPath?: string }) => {
     setInnerCode(e.target.value);
   };
 
-  let Compo = () => <div></div>;
+  // let Compo = () => <div></div>;
 
-  try {
-    Compo = compliedCode ? execCode(compliedCode) : () => <div></div>;
-  } catch (error) {
-    console.log("exec error");
-    Compo = () => <div></div>;
-  }
+  // try {
+  //   Compo = compliedCode ? execCode(compliedCode) : () => <div></div>;
+  // } catch (error) {
+  //   console.log("exec error");
+  //   Compo = () => <div></div>;
+  // }
 
   const Save = () => {
     console.log("save");
@@ -62,7 +63,8 @@ const EditCode = (props: { code: string; currentPath?: string }) => {
     <div className="edit-code-container">
       <div className="component-container" style={{ minHeight }}>
         <ErrorBoundary key={key}>
-          <Compo></Compo>
+          {/* <Compo></Compo> */}
+          <DynamicCompo compiledCode={compliedCode} currentPath={currentPath} />
         </ErrorBoundary>
       </div>
       <textarea

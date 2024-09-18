@@ -38,8 +38,8 @@ const RequirePlugin = (): Plugin => {
         packageLockJsonPath
       );
       if (isModify) {
+        // generateRequire();
       }
-      generateRequire();
     },
     resolveId(id) {
       if (id === virtualRequire) {
@@ -75,15 +75,6 @@ const RequirePlugin = (): Plugin => {
         //   console.error(error);
         // }
       }
-    },
-    configureServer(server) {
-      // server.middlewares.use((req, res, next) => {
-      //   if (req.url?.includes("vite-plugin-require")) {
-      //     const url = req.url;
-      //     console.log("url: ", url);
-      //   }
-      //   next();
-      // });
     },
   };
 };

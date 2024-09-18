@@ -27,9 +27,9 @@ function App() {
   }, []);
   return (
     <div>
-      <DynamicCompo />
+      {/* <DynamicCompo /> */}
       {/* <MarkdownReact code={FoomdStr} /> */}
-      {/* <Foomd /> */}
+      <Foomd />
       {/* <EditCode
         code={`
           import React from 'react';

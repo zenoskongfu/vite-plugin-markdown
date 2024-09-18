@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./index.scss";
 import "../../util/prim-theme";
 import compileCode from "./complieCode";
-import { execCode } from "./execCode";
+import { execCode } from "../util/execCode";
 
 const MarkdownReact = (props: { code: string }) => {
   const [compo, setCompo] = useState<React.ReactElement>(<></>);

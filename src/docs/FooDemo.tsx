@@ -1,5 +1,12 @@
+import Foo from "../component/Foo";
+
 const FooDemo = () => {
-  return <div>demo from code src</div>;
+  return (
+    <div>
+      THIS IS FOODEMO:
+      <Foo />
+    </div>
+  );
 };
 
 export default FooDemo;

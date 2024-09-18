@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { execCode } from "../util/execCode";
 
 declare global {
   interface Window {
@@ -6,34 +7,30 @@ declare global {
   }
 }
 
-const getCompo = () => {
+const generateCompo = (code: string, currentPath: string) => {
   return new Promise((resolve, reject) => {
-    const url = "/src/component/Foo/index.tsx?callback=vitePluginCallback";
-    const script = document.createElement("script");
-    script.type = "module";
-    script.src = url;
-
-    window.vitePluginCallback = (module: any) => {
-      console.log("module", module);
-      resolve(module);
-    };
-    script.onload = () => {
-      // resolve
-    };
-    script.onerror = () => {
-      console.error("script load error");
-      reject(null);
-    };
-
-    document.head.appendChild(script);
+    execCode(code, currentPath)
+      .then((res) => {
+        resolve({ default: res });
+      })
+      .catch(() => {
+        reject(null);
+      });
   });
 };
 
-const DynamicCompo = () => {
+type Props = {
+  compiledCode: string;
+  currentPath: string;
+};
+
+const DynamicCompo = (props: Props) => {
   const [Compo, setCompo] = useState(() => () => null);
 
   useEffect(() => {
-    setCompo(React.lazy(getCompo));
+    setCompo(
+      React.lazy(() => generateCompo(props.compiledCode, props.currentPath))
+    );
   }, []);
 
   return (

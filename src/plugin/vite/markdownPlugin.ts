@@ -9,6 +9,7 @@ import checkDirIsExist from "./util/checkDirIsExist";
 import firstCharUpperCase from "./util/firstCharUpperCase";
 
 const tempPath = path.resolve(__dirname, "../../.temp");
+const rootPath = process.cwd();
 checkDirIsExist(tempPath);
 
 const markdownPlugin = function (): Plugin {
@@ -39,7 +40,7 @@ const markdownPlugin = function (): Plugin {
               tagName: "editcode",
               properties: {
                 code: code,
-                currentPath: dirname,
+                currentPath: dirname.replace(rootPath, ""),
               },
             };
           },
@@ -60,7 +61,7 @@ const markdownPlugin = function (): Plugin {
               tagName: "editcode",
               properties: {
                 code,
-                currentPath: path.dirname(id),
+                currentPath: path.dirname(id).replace(rootPath, ""),
               },
             };
           },

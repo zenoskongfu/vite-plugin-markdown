@@ -63,7 +63,9 @@ const ExportPlugin = declare((api, options) => {
                 defaultExport = id.name;
               }
             },
-            ExportNamedDeclaration(nPath) {},
+            ExportNamedDeclaration(nPath) {
+              // 这是命名导出，暂时不开发
+            },
           });
 
           options.callback?.(defaultExport);
