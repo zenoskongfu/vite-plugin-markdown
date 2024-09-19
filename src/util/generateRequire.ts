@@ -5,6 +5,9 @@ import { dynamicTempPath } from "./config";
 const handlePackageName = (name: string) => {
   return "_" + name.replace(/(-|\/|@)/g, "_");
 };
+
+const LOSE_IMPORT = "lose-import";
+
 const generateRequire = () => {
   try {
     const { dependencies } = packageJson;
@@ -19,29 +22,37 @@ const generateRequire = () => {
       .join("\n");
 
     const requireStr = `
-    function require(module){
-      switch(module){
-          ${dependenciesKeys
-            .map((item) => {
-              return `case '${item}':
-              return ${handlePackageName(item)};`;
-            })
-            .join("\n")}
-          default:
-            fetch('/vite-plugin-require?module='+module);
-            return {}
-        }
+    const importMap = new Map();
+    const LOSE_IMPORT = '${LOSE_IMPORT}';
+
+    function addImport(path: string, module: string) {
+      importMap.set(path, module);
     }
 
+    function require(module){
+      switch(module){
+        ${dependenciesKeys
+          .map((item) => {
+            return `case '${item}':
+            return ${handlePackageName(item)};`;
+          })
+          .join("\n")}
+            
+        default:
+          if (importMap.get(path)) {
+            return importMap.get(path).default;
+          }
+        throw { type: LOSE_IMPORT, path };
+      }
+    }
+
+    export { addImport, LOSE_IMPORT };
     export default require;
     `;
 
-    console.log(importStr, requireStr);
-
     const fileCode = `${importStr}
-
-  ${requireStr}
-  `;
+    ${requireStr}
+    `;
 
     fs.writeFileSync(
       path.resolve(dynamicTempPath, "./require.ts"),

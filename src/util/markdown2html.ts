@@ -12,6 +12,7 @@ import {
   rehypeCodeSrcToReact,
 } from "../plugin/rehypeCodeBlockToReact";
 import _Rehypereact from "./_Rehypereact";
+import remarkPluginFrontmatter from "../plugin/remarkPluginFrontmatter";
 
 const markdown2html = (
   markdown: string,
@@ -21,26 +22,27 @@ const markdown2html = (
   }
 ) => {
   const { codeBlock, codeSrc } = code2ReactOptions;
-  return remark()
-    .use(remarkGfm)
-    .use(remarkRehype, {
-      allowDangerousHtml: true,
-    })
-    .use(rehypeRaw)
-    .use(rehypePrism, { plugins: ["line-numbers"] })
-    .use(rehypeCodeBlockToReact(codeBlock))
-    .use(rehypeCodeSrcToReact(codeSrc))
-    .use(rehypeClassToClassName)
-    .use(rehypeStringify, {
-      allowDangerousHtml: true,
-      allowDangerousCharacters: true,
-      closeSelfClosing: true,
-      upperDoctype: true,
-    })
+  return (
+    remark()
+      // .use(remarkPluginFrontmatter)
+      .use(remarkGfm)
+      .use(remarkRehype, {
+        allowDangerousHtml: true,
+      })
+      .use(rehypeRaw)
+      .use(rehypePrism, { plugins: ["line-numbers"] })
+      .use(rehypeCodeBlockToReact(codeBlock))
+      .use(rehypeCodeSrcToReact(codeSrc))
+      .use(rehypeClassToClassName)
+      .use(rehypeStringify, {
+        allowDangerousHtml: true,
+        allowDangerousCharacters: true,
+        closeSelfClosing: true,
+        upperDoctype: true,
+      })
 
-    .process(markdown);
+      .process(markdown)
+  );
 };
 
 export default markdown2html;
-
-

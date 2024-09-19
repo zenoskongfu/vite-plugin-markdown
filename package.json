@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "gray-matter": "^4.0.3",
     "lodash-es": "^4.17.21",
     "path-browserify": "^1.0.1",
     "prismjs": "^1.29.0",

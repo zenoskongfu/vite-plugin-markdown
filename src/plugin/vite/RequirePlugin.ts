@@ -1,8 +1,7 @@
+import fs from "fs";
 import path from "path";
 import { Plugin } from "vite";
 import checkFileChange from "../../util/checkFileChang";
-import generateRequire from "../../util/generateRequire";
-import fs from "fs";
 import { dynamicTempPath } from "../../util/config";
 import GetExport from "../GetExport";
 

@@ -3,6 +3,9 @@
 ## 例子1
 
 ```tsx
+---
+isEdit: false
+---
 import _ from 'lodash';
 import React from 'react';
 import FooDemo from './FooDemo.tsx';
@@ -15,7 +18,15 @@ export default function Demo1(){
 }
 ```
 
+## 例子2
 ```jsx
+
+
+   
+---
+isEdit: false
+---
+
 import React from 'react';
 
 export default function Demo2(){
@@ -23,13 +34,14 @@ export default function Demo2(){
 }
 ```
 
+## 例子3
 ```js 
 console.log('hello+++++++');
 
 ```
 
+## 例子4
 
-`component`
+下面是一个`component`
 
-
-<code src="../FooDemo.tsx" />
+<code src="./FooDemo.tsx" />

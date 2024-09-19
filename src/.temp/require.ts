@@ -14,13 +14,11 @@ const _remark_rehype = await import("remark-rehype");
 const importMap = new Map();
 const LOSE_IMPORT = "lose-import";
 
-function addImport(path, module) {
+function addImport(path: string, module: string) {
   importMap.set(path, module);
 }
 
-function require(path) {
-  console.log("get: ", path);
-
+function require(path: string) {
   switch (path) {
     case "lodash-es":
       return _lodash_es;
@@ -48,7 +46,6 @@ function require(path) {
       return _remark_rehype;
     default:
       if (importMap.get(path)) {
-        console.log("get inner :", path, importMap.get(path));
         return importMap.get(path).default;
       }
       throw { type: LOSE_IMPORT, path };

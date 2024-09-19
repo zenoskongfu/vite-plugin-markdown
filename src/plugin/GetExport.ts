@@ -98,8 +98,6 @@ const GetExport = (code: string) => {
   }
   `;
 
-  console.log("str: ", str);
-
   return {
     code: _code,
     exportStr: str,

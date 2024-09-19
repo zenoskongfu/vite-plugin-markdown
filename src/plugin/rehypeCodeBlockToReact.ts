@@ -1,11 +1,13 @@
 import { visit } from "unist-util-visit";
+import grayMatter from "gray-matter";
 
 type Tree = import("unist").Node;
 
 export type OptionType = {
   handleCode: (
     code: string,
-    language: string
+    language: string,
+    options?: Record<string, string | number | boolean>
   ) => {
     tagName: string;
     properties?: Record<string, any>;
@@ -37,10 +39,16 @@ const handleCodeBlock = (tree: Tree, options: OptionType) => {
       const codeNode = node.children[0];
       const language =
         codeNode.properties.className?.[0]?.replace("language-", "") || "";
-      const code = codeNode.children[0].value;
-
+      // const code = ;
+      const { content: code, data } = grayMatter(
+        codeNode.children[0].value.replace(/^(\s|\n)+/, "")
+      );
       try {
-        const { tagName, properties, children } = handleCode(code, language);
+        const { tagName, properties, children } = handleCode(
+          code,
+          language,
+          data
+        );
         // 替换为自定义的 React 组件
         node.tagName = "pre";
         node.type = "element";
