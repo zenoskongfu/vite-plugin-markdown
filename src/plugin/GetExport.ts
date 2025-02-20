@@ -10,12 +10,16 @@ const ExportPlugin = declare((api, options) => {
           let defaultExport = "";
           // let namedExport = [];
 
+          // JS不支持默认导出一个正在声明的箭头函数
           path.traverse({
+            // 处理默认导出
             ExportDefaultDeclaration(dPath) {
               const declaration = dPath.node.declaration;
+              // 默认到处是一个标识符
               if (api.types.isIdentifier(declaration)) {
                 defaultExport = declaration.name;
               } else if (api.types.isFunctionDeclaration(declaration)) {
+                // 默认导出是一个函数声明
                 // 生成id
                 const id = dPath.scope.generateUidIdentifier("defaultExport");
                 // 生成默认导出
@@ -33,6 +37,7 @@ const ExportPlugin = declare((api, options) => {
                     exportDecla,
                   ]);
                 } else {
+                  // 默认导出是一个函数表达式，即匿名函数
                   const funcExpression = api.types.functionExpression(
                     null,
                     declaration.params,
@@ -48,6 +53,7 @@ const ExportPlugin = declare((api, options) => {
 
                 defaultExport = id.name;
               } else {
+                // 默认导出是一个表达式
                 // 生成id
                 const id = dPath.scope.generateUidIdentifier("defaultExport");
                 // 生成 赋值语句
